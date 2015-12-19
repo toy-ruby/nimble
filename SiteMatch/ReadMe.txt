@@ -2,6 +2,9 @@
     CONSOLE APPLICATION : SiteMatch Project Overview
 ========================================================================
 
+This project provides an executable, a command-line tool that takes gene name, chromosome, and 
+site coordinate and returns the sequence of requested length to FASTA format file.
+
 AppWizard has created this SiteMatch application for you.
 
 This file contains a summary of what you will find in each of the files that
@@ -38,3 +41,4 @@ AppWizard uses "TODO:" comments to indicate parts of the source code you
 should add to or customize.
 
 /////////////////////////////////////////////////////////////////////////////
+
