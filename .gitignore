@@ -222,3 +222,8 @@ ModelManifest.xml
 ~*
 *.opendb
 *.vcproj.filters
+*.config
+*.creator
+*.files
+*.includes
+*.sln
