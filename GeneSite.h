@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 
 #include <string>
 #include <stdio.h>
@@ -12,7 +12,7 @@ public:
 	~GeneSite();
 	GeneSite(string _name, string _geneSymbol, string _chrom, int _txStart, int _txEnd, string _direction);
 	GeneSite(string _geneSymbol, string _chrom, int _txStart, int _txEnd, string _direction);
-	GeneSite::GeneSite(string _name, string _chrom, int _txStart);
+	GeneSite(string _name, string _chrom, int _txStart);
 	string GeneSite::stripSymbol(string);
 	void GeneSite::clear();
 
