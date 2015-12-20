@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "GeneSite.h"
 #include <string>
 #include <iostream>
