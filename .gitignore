@@ -215,3 +215,4 @@ ModelManifest.xml
 *.vsproj
 *.o
 ~*
+*.opendb
