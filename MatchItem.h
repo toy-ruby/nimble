@@ -5,7 +5,7 @@
 class MatchItem
 {
 public:
-	//MatchItem();
+	MatchItem();
 	~MatchItem();
 	MatchItem(GeneSite gene, string chromDir);
 	MatchItem(ifstream& cmpFile, string chromDir);

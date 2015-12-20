@@ -1,0 +1,15 @@
+Build Instructions
+
+Clone the Repository
+
+$ git clone https://github.com/toy-ruby/nimble
+
+A nimble/ directory is created in current location
+
+$ cd nimble
+
+Modify the Makefile
+o You may need to adjust the linker (-L<lib directory)
+
+Once Makefile is correct, compile and build
+$ make

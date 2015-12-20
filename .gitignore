@@ -24,6 +24,11 @@ bld/
 
 # Visual Studio 2015 cache/options directory
 .vs/
+*.vcxproj
+*.vcxproj.filters
+stdafx.cpp
+stdafx.h
+targetver.h
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -216,3 +221,4 @@ ModelManifest.xml
 *.o
 ~*
 *.opendb
+*.vcproj.filters
