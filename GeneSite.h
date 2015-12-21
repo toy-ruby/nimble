@@ -1,4 +1,6 @@
-#pragma once
+//#pragma once
+#ifndef GENESITE_H
+#define GENESITE_H
 
 #include <string>
 #include <stdio.h>
@@ -24,3 +26,4 @@ public:
 	string direction;
 };
 
+#endif

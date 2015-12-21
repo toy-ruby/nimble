@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MATCHITEM_H
+#define MATCHITEM_H
+
 #include <fstream>
 #include "GeneSite.h"
 
@@ -24,3 +26,5 @@ private:
 	bool dirValid(string path);
 	unsigned long site;
 };
+
+#endif

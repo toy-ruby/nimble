@@ -4,9 +4,9 @@
 
 namespace fs = boost::filesystem;
 
-//MatchItem::MatchItem()
-//{
-//}
+MatchItem::MatchItem()
+{
+}
 MatchItem::MatchItem(GeneSite g, string dir)
 {
 	string coord;

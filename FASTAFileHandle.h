@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FASTAFILEHANDLE_H
+#define FASTAFILEHANDLE_H
 
 #include <fstream>
 #include <cstring>
@@ -29,3 +30,4 @@ private:
 	unsigned int detectDataWidth();
 };
 
+#endif

@@ -1,8 +1,4 @@
-//#include "stdafx.h"
 #include "GeneSite.h"
-#include <string>
-#include <iostream>
-#include <cstring>
 
 using namespace std;
 
