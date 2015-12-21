@@ -1,20 +1,20 @@
 #include "FASTAFileHandle.h"
 
-FASTAFileHandle()
+FASTAFileHandle::FASTAFileHandle()
 {
 }
 
-FASTAFileHandle(string path)
+FASTAFileHandle::FASTAFileHandle(string path)
 {
 	filePath = path;
 	dataWidth = detectDataWidth();
 }
 
-~FASTAFileHandle()
+FASTAFileHandle::~FASTAFileHandle()
 {
 }
 
-bool trimFASTA(string inPath, string outPath, double n = 1)
+bool FASTAFileHandle::trimFASTA(string inPath, string outPath, double n = 1)
 /*
 Take inPath of FASTA File, write n number of lines to outPath file
 Purpose is to cut a sample of an otherwise too-large-to-open file
@@ -50,7 +50,7 @@ purposes. Likely, no practical use cases.
 	return result;
 }
 
-string getSequence(long begin, long end)
+string FASTAFileHandle::getSequence(long begin, long end)
 {
 	string result;
 	string tmp;
@@ -75,7 +75,7 @@ string getSequence(long begin, long end)
 	return result;
 }
 
-ifstream getFileInStream()
+ifstream FASTAFileHandle::getFileInStream()
 {
 	ifstream fin;
 	if (!isValid())
@@ -88,7 +88,7 @@ ifstream getFileInStream()
 	}
 }
 
-bool isValid()
+bool FASTAFileHandle::isValid()
 {
 	ifstream in;
 	bool result;
@@ -99,7 +99,7 @@ bool isValid()
 	return result;
 }
 
-unsigned int detectDataWidth()
+unsigned int FASTAFileHandle::detectDataWidth()
 {
 	char cur;
 	unsigned int width = 0;
@@ -120,7 +120,7 @@ unsigned int detectDataWidth()
 	return width;
 }
 
-unsigned int getDataWidth()
+unsigned int FASTAFileHandle::getDataWidth()
 {
 	return dataWidth;
 }
