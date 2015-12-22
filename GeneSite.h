@@ -15,8 +15,8 @@ public:
 	GeneSite(string _name, string _geneSymbol, string _chrom, int _txStart, int _txEnd, string _direction);
 	GeneSite(string _geneSymbol, string _chrom, int _txStart, int _txEnd, string _direction);
 	GeneSite(string _name, string _chrom, int _txStart);
-	string GeneSite::stripSymbol(string);
-	void GeneSite::clear();
+	string stripSymbol(string);
+	void clear();
 
 	string name;
 	string geneSymbol;
