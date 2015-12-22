@@ -38,18 +38,50 @@ unsigned int coord;
 
 int main(int argc, char* argv[])
 {
-	if(!handleArgs(argc, *&argv)) return 1;
+	if(!handleArgs(argc, *&argv)) 
+		return 1;
 	// At this point, we will have EITHER
 	// filePath set OR
 	// chrom, coord and header set
-
-	GeneSite g(header, chrom, coord);
 	
-	MatchItem item(g, chromDirPath);
-	string output = item.doMatch(10);
-	cout << "Matching sequence: " << output << endl;
-
-	
+	if (matchFilePath == "")
+	{
+		GeneSite g(header, chrom, coord);
+		MatchItem item(g, chromDirPath);
+		string output = item.doMatch(bases);
+		cout << "Matching sequence: " << output << endl;
+	}
+	else
+	{
+		ifstream ins;
+		if (fs::exists(matchFilePath) &&
+			fs::is_regular_file(matchFilePath))
+		{
+			GeneSite g;
+			
+			ins.open(matchFilePath);
+			while (!ins.eof())
+			{
+				if (ins.get() != '#') 
+				{
+					ins.unget();
+					ins >> g.name >> g.geneSymbol >> g.chrom >> g.txStart >> g.txEnd >> g.direction;
+					MatchItem item(g, chromDirPath);
+					string output = item.doMatch(bases);
+					cout << "Matching sequence: " << output << endl;
+				}
+				else
+				{
+					string tmp;
+					getline(ins, tmp);
+				}
+			}
+			ins.close();
+		}
+		else {
+			cout << matchFilePath << " is not a regular file." << endl;
+		}
+	}
 	return 0;
 }
 
@@ -137,6 +169,7 @@ bool handleArgs(int count, char* args[])
 	else if (vm.count("coord") && vm.count("input-file")) 
 	{
 		cout << "Coord and Input-File are specified. Deafulting to input-file. Coord will be discarded." << endl;
+		matchFilePath = vm["input-file"].as<string>();
 		coord = -1;
 	}
 	else {
