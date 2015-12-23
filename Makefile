@@ -1,6 +1,6 @@
 OBJS = SiteMatch.o MatchItem.o FASTAFileHandle.o GeneSite.o
 CC = g++
-DEBUG = -g -fpermissive
+DEBUG = -g
 CFLAGS = -c -std=c++11 $(DEBUG)
 LFLAGS = -Wall $(DEBUG)\
 			   -L/usr/lib \
