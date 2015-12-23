@@ -38,6 +38,7 @@ GeneSite::GeneSite(string _geneSymbol, string _chrom, int _txStart, int _txEnd, 
 
 GeneSite::GeneSite(string _name, string _chrom, int _txStart)
 {
+	name = _name;
 	chrom = _chrom;
 	txStart = _txStart;
 }
