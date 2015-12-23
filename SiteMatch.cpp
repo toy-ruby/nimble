@@ -33,23 +33,29 @@ string chrom;
 string inPath;
 string outPath;
 string tmp;
+bool verbose = false;
 unsigned int bases;
 unsigned int coord;
 
 int main(int argc, char* argv[])
 {
-	if(!handleArgs(argc, *&argv)) 
+	if (!handleArgs(argc, *&argv))
 		return 1;
 	// At this point, we will have EITHER
 	// filePath set OR
 	// chrom, coord and header set
-	
+	ofstream outs;
+	outs.open(outPath);
+
 	if (matchFilePath == "")
 	{
 		GeneSite g(header, chrom, coord);
 		MatchItem item(g, chromDirPath);
 		string output = item.doMatch(bases);
-		cout << "Matching sequence: " << output << endl;
+		if (verbose) cout << "Matching sequence: " << output << endl;
+		outs << item.getHeader() << endl;
+		outs << output << endl << endl;
+		// send new line to out stream
 	}
 	else
 	{
@@ -58,17 +64,19 @@ int main(int argc, char* argv[])
 			fs::is_regular_file(matchFilePath))
 		{
 			GeneSite g;
-			
+
 			ins.open(matchFilePath);
 			while (!ins.eof())
 			{
-				if (ins.get() != '#') 
+				if (ins.get() != '#')
 				{
 					ins.unget();
 					ins >> g.name >> g.geneSymbol >> g.chrom >> g.txStart >> g.txEnd >> g.direction;
 					MatchItem item(g, chromDirPath);
 					string output = item.doMatch(bases);
-					cout << "Matching sequence: " << output << endl;
+					if (verbose) cout << "Matching sequence: " << output << endl;
+					outs << item.getHeader() << endl;
+					outs << output << endl << endl;
 				}
 				else
 				{
@@ -82,6 +90,7 @@ int main(int argc, char* argv[])
 			cout << matchFilePath << " is not a regular file." << endl;
 		}
 	}
+	outs.close();
 	return 0;
 }
 
@@ -105,6 +114,7 @@ bool handleArgs(int count, char* args[])
 		("genome-dir,d", po::value<string>(), "Path to directory containing genome files")
 		("input-file,i", po::value<string>(), "The path the the input file to be used for matching")
 		("output-file,o", po::value<string>(), "Path to output FASTA file")
+		("verbose,v", "Display verbose output to standard out.")
 		;
 
 	po::positional_options_description p;
@@ -128,60 +138,68 @@ bool handleArgs(int count, char* args[])
 		cout << desc << endl;
 		return false;
 	}
-
+	if (vm.count("verbose"))
+	{
+		verbose = true;
+	}
+	else
+	{
+		verbose = false;
+	}
 	if (vm.count("header") && !vm.count("file-input"))
 	{
 		header = vm["header"].as<string>();
-		cout << "Header: " << vm["header"].as<string>() << endl;	// DEBUG
+		if (verbose) cout << "Header: " << vm["header"].as<string>() << endl;	// DEBUG
 	}
-	else if (vm.count("header") && vm.count("file-input")) 
+	else if (vm.count("header") && vm.count("file-input"))
 	{
 		cout << "Header and Input-File are specified. Deafulting to input-file. Header will be discarded." << endl;
+		matchFilePath = vm["input-file"].as<string>();
 	}
-	else {
-		cout << "--header is required!" << endl;
-		cout << desc << endl;
-		return false;
+	else if (!vm.count("header") && vm.count("file-input"))
+	{
+		matchFilePath = vm["input-file"].as<string>();
 	}
 
 	if (vm.count("chrom") && !vm.count("file-input"))
 	{
 		chrom = vm["chrom"].as<string>();
-		cout << "Chromosome: " << vm["chrom"].as<string>() << endl;	// DEBUG
+		if (verbose) cout << "Chromosome: " << vm["chrom"].as<string>() << endl;	// DEBUG
 
 	}
-	else if (vm.count("chrom") && vm.count("file-input")) 
+	else if (vm.count("chrom") && vm.count("file-input"))
 	{
 		cout << "Chrom and Input-File are specified. Deafulting to input-file. Chrom will be discarded." << endl;
 		chrom = "";
 	}
-	else {
+	else if (vm.count("input-file"))
+	{
+		matchFilePath = vm["input-file"].as<string>();
+	}
+	else 
+	{
 		cout << "--input-file or --chrom is required!" << endl;
 		cout << desc << endl;
 		return false;
 	}
 
+
 	if (vm.count("coord") && !vm.count("input-file"))
 	{
 		coord = vm["coord"].as<unsigned int>();
-		cout << "Coordinate: " << vm["coord"].as<unsigned int>() << endl;	// DEBUG
+		if (verbose) cout << "Coordinate: " << vm["coord"].as<unsigned int>() << endl;	// DEBUG
 	}
-	else if (vm.count("coord") && vm.count("input-file")) 
+	else if (vm.count("coord") && vm.count("input-file"))
 	{
 		cout << "Coord and Input-File are specified. Deafulting to input-file. Coord will be discarded." << endl;
 		matchFilePath = vm["input-file"].as<string>();
 		coord = -1;
 	}
-	else {
-		cout << "--input-file or --coord is required!" << endl;
-		cout << desc << endl;
-		return false;
-	}
 
 	if (vm.count("bases"))
 	{
 		bases = vm["bases"].as<unsigned int>();
-		cout << "Bases: " << vm["bases"].as<unsigned int>() << endl;	// DEBUG
+		if (verbose) cout << "Bases: " << vm["bases"].as<unsigned int>() << endl;	// DEBUG
 	}
 	else {
 		cout << "--bases is required!" << endl;
@@ -192,7 +210,7 @@ bool handleArgs(int count, char* args[])
 	if (vm.count("genome-dir"))
 	{
 		chromDirPath = vm["genome-dir"].as<string>();
-		cout << "Genome Directory: " << vm["genome-dir"].as<string>() << endl;	// DEBUG
+		if (verbose) cout << "Genome Directory: " << vm["genome-dir"].as<string>() << endl;	// DEBUG
 
 	}
 	else {
@@ -204,9 +222,10 @@ bool handleArgs(int count, char* args[])
 	if (vm.count("output-file"))
 	{
 		outPath = vm["output-file"].as<string>();
-		cout << "Out File: " << vm["output-file"].as<string>() << endl;	// DEBUG
+		if (verbose) cout << "Out File: " << vm["output-file"].as<string>() << endl;	// DEBUG
 	}
-	else {
+	else 
+	{
 		cout << "--output-file is required!" << endl;
 		cout << desc << endl;
 		return false;
@@ -215,10 +234,10 @@ bool handleArgs(int count, char* args[])
 	if (vm.count("input-file") && !vm.count("header"))
 	{
 		inPath = vm["input-file"].as<string>();
-		cout << "In File: " << vm["input-file"].as<string>() << endl;	// DEBUG
+		if (verbose) cout << "In File: " << vm["input-file"].as<string>() << endl;	// DEBUG
 		matchFilePath = vm["input-file"].as<string>();
 	}
-	else if(vm.count("input-file") && vm.count("header")) 
+	else if (vm.count("input-file") && vm.count("header"))
 	{
 		cout << "Header and Input-File are specified. Deafulting to input-file. Header will be discarded." << endl;
 		inPath = vm["input-file"].as<string>();

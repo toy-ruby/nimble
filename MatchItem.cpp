@@ -10,9 +10,11 @@ MatchItem::MatchItem()
 MatchItem::MatchItem(GeneSite g, string dir)
 {
 	string coord;
-	header = "";
-	header.append(g.name + " ");
-	header.append(g.chrom + " ");
+	header = ">";
+	header.append(g.name);
+	header.append("|");
+	header.append(g.chrom);
+	header.append("|");
 	header.append(to_string(g.txStart));
 	site = g.txStart;
 	chrom = g.chrom;
@@ -107,7 +109,8 @@ string MatchItem::doMatch(unsigned int bases)
 				targetSeq.push_back((char)chromIn.get());
 			}
 			chromIn.close();
+			return targetSeq;
 		}
-		return targetSeq;
+		
 	}
 }

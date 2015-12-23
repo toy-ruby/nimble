@@ -17,7 +17,6 @@ public:
 	~FASTAFileHandle();
 
 	bool trimFASTA(string inPath, string outPath, double lines);
-	string getSequence(long begin, long end);
 	ifstream getFileInStream();
 	bool isValid();
 	unsigned int getDataWidth();

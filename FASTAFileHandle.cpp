@@ -50,31 +50,6 @@ purposes. Likely, no practical use cases.
 	return result;
 }
 
-string FASTAFileHandle::getSequence(long begin, long end)
-{
-	string result;
-	string tmp;
-	char cur = '\0';
-	long pos = 0;
-	ifstream in = getFileInStream();
-	if ((char)in.peek() == '>')
-	{
-		getline(in, tmp);
-	}
-	while(pos < begin)
-	{
-		in.get();
-		pos++;
-	}
-
-	for (; pos < end; pos++)
-	{
-		result =+ cur;
-		cur = (char)in.get();
-	}
-	return result;
-}
-
 ifstream FASTAFileHandle::getFileInStream()
 {
 	ifstream fin;
