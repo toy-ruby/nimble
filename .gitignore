@@ -227,5 +227,5 @@ ModelManifest.xml
 *.creator
 *.files
 *.includes
-*.sln
+# *.sln
 *.zip
