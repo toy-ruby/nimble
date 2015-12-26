@@ -216,8 +216,8 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-# # Other
-.vsproj
+# Other
+# .vsproj
 *.o
 ~*
 *.opendb
