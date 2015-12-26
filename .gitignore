@@ -217,7 +217,7 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 # Other
-*.vsproj
+.vsproj
 *.o
 ~*
 *.opendb
