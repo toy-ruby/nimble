@@ -89,8 +89,8 @@ string MatchItem::doMatch(unsigned int bases)
 			// newPos = (int)newPos + (int)(site / data_width);				// Unix line breaks
 			chromIn.seekg(newPos);
 			auto tell_pos = chromIn.tellg();
-			if ((tell_pos % data_width) > 11 || (tell_pos % data_width) < 40)	// TODO: perform calculation with data_width
-			{																	// instead of magic numbers	
+			if ((tell_pos % data_width) > (1 + bases) || (tell_pos % data_width) < (data_width - bases))
+			{																
 				newPos -= bases + 2;
 			}
 			else {
