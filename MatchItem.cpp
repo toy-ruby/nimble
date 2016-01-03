@@ -58,6 +58,7 @@ bool MatchItem::dirValid(string path)
 	{
 		return true;
 	}
+    cout << "File: " << p << " is not a directory or does not exist." << endl;
 	return false;
 }
 

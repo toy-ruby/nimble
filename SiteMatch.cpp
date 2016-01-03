@@ -73,6 +73,8 @@ int main(int argc, char* argv[])
 					ins.unget();
 					ins >> g.name >> g.geneSymbol >> g.chrom >> g.txStart >> g.txEnd >> g.direction;
 					MatchItem item(g, chromDirPath);
+                    // need something here to terminate execution when chrom path is bad
+                    // I don't think an exception is throw though, what to do?
 					string output = item.doMatch(bases);
 					if (verbose) cout << "Matching sequence: " << output << endl;
 					outs << item.getHeader() << endl;
