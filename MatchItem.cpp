@@ -90,12 +90,29 @@ string MatchItem::doMatch(unsigned int bases)
             //newPos = (int)newPos + (int)(site / data_width);				// Unix line breaks
 			chromIn.seekg(newPos);
 			auto tell_pos = chromIn.tellg();
-			if ((tell_pos % data_width) > (1 + bases) || (tell_pos % data_width) < (data_width - bases))
-			{																
-				newPos -= bases + 2;
+			
+			// determine if current position is within bases positions of beg/end of line
+			if (tell_pos > data_width) {
+				if ((site % data_width) < (1 + bases))
+				{
+					newPos -= bases + 2;
+					//newPos -= bases + 1;	// Unix line breaks
+				}
+				else {
+					newPos -= bases;
+				}
 			}
-			else {
-				newPos -= bases;
+			else 
+			{
+				// TODO determine if this is necessary; may not need conditional here
+				if ((tell_pos % data_width) > (data_width - bases))
+				{
+					newPos -= bases + 2;
+					//newPos -= bases + 1;	// Unix line breaks
+				}
+				else {
+					newPos -= bases;
+				}
 			}
 
 			chromIn.seekg(newPos);
