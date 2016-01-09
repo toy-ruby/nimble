@@ -87,9 +87,11 @@ unsigned int FASTAFileHandle::detectDataWidth()
 		std::getline(in, tmp);
 	}
 
-	while (cur = in.get() != '\n')
-	{
+    cur = in.get();
+    while (cur != '\n' && cur != '\r')
+	{        
 		width++;
+        cur = in.get();
 	}
 	in.close();
 	return width;

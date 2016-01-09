@@ -95,8 +95,8 @@ string MatchItem::doMatch(unsigned int bases)
 			if (tell_pos > data_width) {
 				if ((site % data_width) < (1 + bases))
 				{
-					newPos -= bases + 2;
-					//newPos -= bases + 1;	// Unix line breaks
+                    newPos -= bases + 2;
+                    //newPos -= bases + 1;	// Unix line breaks
 				}
 				else {
 					newPos -= bases;
@@ -107,24 +107,27 @@ string MatchItem::doMatch(unsigned int bases)
 				// TODO determine if this is necessary; may not need conditional here
 				if ((tell_pos % data_width) > (data_width - bases))
 				{
-					newPos -= bases + 2;
-					//newPos -= bases + 1;	// Unix line breaks
+                    newPos -= bases + 2;
+                    //newPos -= bases + 1;	// Unix line breaks
 				}
 				else {
 					newPos -= bases;
 				}
 			}
 
+            char tmp;
 			chromIn.seekg(newPos);
 			for (int i = (bases * 2); i >= 0; i--)
 			{
-				if (chromIn.get() == '\n')
+                tmp = chromIn.get();
+                if (tmp == '\n' ||
+                        tmp == '\r')
 				{
 					i++;
 					continue;
 				}
-				chromIn.unget();
-				targetSeq.push_back((char)chromIn.get());
+                //chromIn.unget();
+                targetSeq.push_back(tmp);
 			}
 			chromIn.close();
 			return targetSeq;
