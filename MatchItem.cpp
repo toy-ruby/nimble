@@ -87,7 +87,6 @@ string MatchItem::doMatch(unsigned int bases)
 			streampos newPos = site + file_start;
 			int data_width = fh.getDataWidth();
             newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
-            //newPos = (int)newPos + (int)(site / data_width);				// Unix line breaks
 			chromIn.seekg(newPos);
 			auto tell_pos = chromIn.tellg();
 			
@@ -95,8 +94,7 @@ string MatchItem::doMatch(unsigned int bases)
 			if (tell_pos > data_width) {
 				if ((site % data_width) < (1 + bases))
 				{
-                    newPos -= bases + 2;
-                    //newPos -= bases + 1;	// Unix line breaks
+                    newPos -= bases + 2;                  
 				}
 				else {
 					newPos -= bases;
@@ -108,7 +106,6 @@ string MatchItem::doMatch(unsigned int bases)
 				if ((tell_pos % data_width) > (data_width - bases))
 				{
                     newPos -= bases + 2;
-                    //newPos -= bases + 1;	// Unix line breaks
 				}
 				else {
 					newPos -= bases;
@@ -117,7 +114,7 @@ string MatchItem::doMatch(unsigned int bases)
 
             char tmp;
 			chromIn.seekg(newPos);
-			for (int i = (bases * 2); i >= 0; i--)
+            for (int i = (bases * 2); i >= 0; i--)
 			{
                 tmp = chromIn.get();
                 if (tmp == '\n' ||
