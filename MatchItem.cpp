@@ -125,7 +125,7 @@ string MatchItem::doMatch(unsigned int bases)
 				}
                 //chromIn.unget();
                 targetSeq.push_back(tmp);
-				cout << "tmp = " << tmp << endl;
+				//cout << "tmp = " << tmp << endl;
 			}
 			chromIn.close();
 			return targetSeq;
