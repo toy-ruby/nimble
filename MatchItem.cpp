@@ -86,7 +86,8 @@ string MatchItem::doMatch(unsigned int bases)
 			// cout << "Trying to find " << site << "..." << endl;
 			streampos newPos = site + file_start;
 			int data_width = fh.getDataWidth();
-            newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
+            //newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
+            newPos = ((int)newPos + ((int)(site / data_width))) - 1;	// Linux line breaks
 			chromIn.seekg(newPos);
 			auto tell_pos = chromIn.tellg();
 			
@@ -94,7 +95,8 @@ string MatchItem::doMatch(unsigned int bases)
 			if (tell_pos > data_width) {
 				if ((site % data_width) < (1 + bases))
 				{
-                    newPos -= bases + 2;                  
+                    newPos -= bases + 1;    // Linux
+                    //newPos -= bases + 2;  // Windows
 				}
 				else {
 					newPos -= bases;
@@ -105,7 +107,8 @@ string MatchItem::doMatch(unsigned int bases)
 				// TODO determine if this is necessary; may not need conditional here
 				if ((tell_pos % data_width) > (data_width - bases))
 				{
-                    newPos -= bases + 2;
+                    newPos -= bases + 2;    // Windows
+                    newPos -= bases + 1;    // Linux
 				}
 				else {
 					newPos -= bases;
