@@ -2,6 +2,19 @@
 #include "FASTAFileHandle.h"
 #include <boost/filesystem.hpp>
 
+#ifdef __linux__
+	#define LINUX true
+	#define WINDOWS false
+#endif
+
+
+//#else
+#ifdef _WIN16 || _WIN32 || _WIN64 || __WIN32__ || __TOS_WIN__ || __WINDOWS__
+#define LINUX false
+#define WINDOWS true
+#endif
+//#endif
+
 namespace fs = boost::filesystem;
 
 MatchItem::MatchItem()
@@ -9,6 +22,7 @@ MatchItem::MatchItem()
 }
 MatchItem::MatchItem(GeneSite g, string dir)
 {
+	string OS = OS;
 	string coord;
 	header = ">";
 	header.append(g.name);
@@ -86,8 +100,10 @@ string MatchItem::doMatch(unsigned int bases)
 			// cout << "Trying to find " << site << "..." << endl;
 			streampos newPos = site + file_start;
 			int data_width = fh.getDataWidth();
-            //newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
-            newPos = ((int)newPos + ((int)(site / data_width))) - 1;	// Linux line breaks
+			if(LINUX) newPos = ((int)newPos + ((int)(site / data_width))) - 1;	// Linux line breaks
+            if(WINDOWS) newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
+            
+			
 			chromIn.seekg(newPos);
 			auto tell_pos = chromIn.tellg();
 			
@@ -95,8 +111,8 @@ string MatchItem::doMatch(unsigned int bases)
 			if (tell_pos > data_width) {
 				if ((site % data_width) < (1 + bases))
 				{
-                    newPos -= bases + 1;    // Linux
-                    //newPos -= bases + 2;  // Windows
+                    if(LINUX) newPos -= bases + 1;    // Linux
+                    if(WINDOWS) newPos -= bases + 2;  // Windows
 				}
 				else {
 					newPos -= bases;
@@ -107,8 +123,8 @@ string MatchItem::doMatch(unsigned int bases)
 				// TODO determine if this is necessary; may not need conditional here
 				if ((tell_pos % data_width) > (data_width - bases))
 				{
-                    newPos -= bases + 2;    // Windows
-                    newPos -= bases + 1;    // Linux
+                    if(WINDOWS) newPos -= bases + 2;    // Windows
+                    if(LINUX) newPos -= bases + 1;    // Linux
 				}
 				else {
 					newPos -= bases;
