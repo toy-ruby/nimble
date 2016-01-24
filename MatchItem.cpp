@@ -3,17 +3,12 @@
 #include <boost/filesystem.hpp>
 
 #ifdef __linux__
-	#define LINUX true
-	#define WINDOWS false
+    #define LINUX true
+    #define WINDOWS false
+#else
+    #define LINUX false
+    #define WINDOWS true
 #endif
-
-
-//#else
-#ifdef _WIN16 || _WIN32 || _WIN64 || __WIN32__ || __TOS_WIN__ || __WINDOWS__
-#define LINUX false
-#define WINDOWS true
-#endif
-//#endif
 
 namespace fs = boost::filesystem;
 
@@ -22,8 +17,7 @@ MatchItem::MatchItem()
 }
 MatchItem::MatchItem(GeneSite g, string dir)
 {
-	string OS = OS;
-	string coord;
+    string coord;
 	header = ">";
 	header.append(g.name);
 	header.append("|");
@@ -100,8 +94,12 @@ string MatchItem::doMatch(unsigned int bases)
 			// cout << "Trying to find " << site << "..." << endl;
 			streampos newPos = site + file_start;
 			int data_width = fh.getDataWidth();
-			if(LINUX) newPos = ((int)newPos + ((int)(site / data_width))) - 1;	// Linux line breaks
-            if(WINDOWS) newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
+            if(LINUX) {
+                newPos = ((int)newPos + ((int)(site / data_width))) - 1;	// Linux line breaks
+            }
+            if(WINDOWS) {
+                newPos = ((int)newPos + ((int)(site / data_width) * 2)) - 1;	// Windows line breaks
+            }
             
 			
 			chromIn.seekg(newPos);
