@@ -280,9 +280,9 @@ map<int, map<int, GeneSite>> matchGene(map<int, GeneSite> hg19Genes, map<int, Ge
     map<int, map<int, GeneSite>> result;
     map<int, GeneSite> match;
 
-    for (int i = 0; i < hg19Genes.size(); i++)
+    for (unsigned int i = 0; i < hg19Genes.size(); i++)
     {
-        for (int j = 0; j < mGenes.size(); j++)
+        for (unsigned int j = 0; j < mGenes.size(); j++)
         {
             if (hg19Genes[i].txStart == mGenes[j].txStart)
             {
