@@ -40,7 +40,6 @@ static unsigned int coord;
 
 int main(int argc, char* argv[])
 {
-    string test = "TEST";
     if (!handleArgs(argc, *&argv))
         return 1;
     // At this point, we will have EITHER
@@ -159,7 +158,7 @@ bool handleArgs(int count, char* args[])
     {
         cout << "Header and Input-File are specified. Deafulting to input-file. Header will be discarded." << endl;
         matchFilePath = vm["input-file"].as<string>();
-        if(fileExists(matchFilePath))
+        if(!fileExists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl << endl;
             return false;
@@ -168,7 +167,7 @@ bool handleArgs(int count, char* args[])
     else if (!vm.count("header") && vm.count("file-input"))
     {
         matchFilePath = vm["input-file"].as<string>();
-        if(fileExists(matchFilePath))
+        if(!fileExists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -189,7 +188,7 @@ bool handleArgs(int count, char* args[])
     {
         cout << vm["input-file"].as<string>() << endl;
         matchFilePath = vm["input-file"].as<string>();
-        if(fileExists(matchFilePath))
+        if(!fileExists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -211,7 +210,7 @@ bool handleArgs(int count, char* args[])
     {
         cout << "Coord and Input-File are specified. Deafulting to input-file. Coord will be discarded." << endl;
         matchFilePath = vm["input-file"].as<string>();
-        if(fileExists(matchFilePath))
+        if(!fileExists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -259,7 +258,7 @@ bool handleArgs(int count, char* args[])
         inPath = vm["input-file"].as<string>();
         if (verbose) cout << "In File: " << vm["input-file"].as<string>() << endl;
         matchFilePath = vm["input-file"].as<string>();
-        if(fileExists(matchFilePath))
+        if(!fileExists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
