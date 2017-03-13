@@ -21,7 +21,6 @@ using namespace std;
 
 void printGene(GeneSite);
 bool handleArgs(int count, char* args[]);
-bool fileExists(string file);
 map<int, map<int, GeneSite>> matchGene(map<int, GeneSite> hg19Genes, map<int, GeneSite> mGenes);
 map<int, GeneSite> mapFromFile(string path);
 map<int, string> matchListFromFile(string path);
@@ -45,9 +44,12 @@ int main(int argc, char* argv[])
     // At this point, we will have EITHER
     // filePath set OR
     // chrom, coord and header set
+
+    // create the output file stream and opwn
     ofstream outs;
     outs.open(outPath);
 
+    // Test if a match file was specified in arguments
     if (matchFilePath == "")
     {
         GeneSite g(header, chrom, coord);
@@ -157,8 +159,9 @@ bool handleArgs(int count, char* args[])
     else if (vm.count("header") && vm.count("file-input"))
     {
         cout << "Header and Input-File are specified. Deafulting to input-file. Header will be discarded." << endl;
+
         matchFilePath = vm["input-file"].as<string>();
-        if(!fileExists(matchFilePath))
+        if(!fs::exists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl << endl;
             return false;
@@ -167,7 +170,7 @@ bool handleArgs(int count, char* args[])
     else if (!vm.count("header") && vm.count("file-input"))
     {
         matchFilePath = vm["input-file"].as<string>();
-        if(!fileExists(matchFilePath))
+        if(!fs::exists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -187,8 +190,10 @@ bool handleArgs(int count, char* args[])
     else if (vm.count("input-file"))
     {
         cout << vm["input-file"].as<string>() << endl;
+        fstream fTest(vm["input-file"].as<string>());
+
         matchFilePath = vm["input-file"].as<string>();
-        if(!fileExists(matchFilePath))
+        if(!fs::exists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -210,7 +215,7 @@ bool handleArgs(int count, char* args[])
     {
         cout << "Coord and Input-File are specified. Deafulting to input-file. Coord will be discarded." << endl;
         matchFilePath = vm["input-file"].as<string>();
-        if(!fileExists(matchFilePath))
+        if(!fs::exists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -232,6 +237,11 @@ bool handleArgs(int count, char* args[])
     if (vm.count("genome-dir"))
     {
         chromDirPath = vm["genome-dir"].as<string>();
+        if(!fs::exists(chromDirPath))
+        {
+            cout << "ERROR: chromosome directory " << chromDirPath << " is bad." << endl;
+            return false;
+        }
         if (verbose) cout << "Genome Directory: " << vm["genome-dir"].as<string>() << endl;
 
     }
@@ -258,7 +268,7 @@ bool handleArgs(int count, char* args[])
         inPath = vm["input-file"].as<string>();
         if (verbose) cout << "In File: " << vm["input-file"].as<string>() << endl;
         matchFilePath = vm["input-file"].as<string>();
-        if(!fileExists(matchFilePath))
+        if(!fs::exists(matchFilePath))
         {
             cout << "ERROR: input file " << matchFilePath << " is bad." << endl;
             return false;
@@ -358,10 +368,4 @@ streampos fIndex(int ind, int headerLen)
     result = ind - headerLen;
     result = result - (result % 50);
     return result;
-}
-
-bool fileExists(string file)
-{
-    ifstream f(file.c_str());
-    return f.good();
 }
